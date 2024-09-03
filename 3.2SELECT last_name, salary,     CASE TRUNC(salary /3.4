@@ -1,0 +1,25 @@
+WITH RankedEmployees AS (
+    SELECT
+        department_id,
+        employee_id,
+        first_name || ' ' || last_name AS full_name,
+        salary,
+        ROW_NUMBER() OVER (PARTITION BY department_id ORDER BY salary DESC) AS rank
+    FROM
+        employees
+)
+SELECT
+    department_id,
+    employee_id,
+    full_name,
+    salary
+FROM
+    RankedEmployees
+WHERE
+    rank = 1
+ORDER BY
+    department_id
+
+
+. จงเขียนคำสั่งเพื่อแสดงรหัสแผนก รหัสพนักงาน ชื่อ-สกุล และเงินเดือนของพนักงาน 
+ที่มีเงินเดือนสูงที่สุดของแต่ละแผนก
