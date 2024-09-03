@@ -1,0 +1,24 @@
+WITH JobHistory AS (
+    SELECT
+        employee_id,
+        department_id,
+        job_id,
+        hire_date,
+        ROW_NUMBER() OVER (PARTITION BY employee_id, department_id ORDER BY hire_date) AS job_change_number
+    FROM
+        employees
+)
+SELECT
+    employee_id,
+    department_id,
+    COUNT(*) - 1 AS job_change_count
+FROM
+    JobHistory
+GROUP BY
+    employee_id,
+    department_id
+ORDER BY
+    employee_id
+
+จงเขียนคำสั่งเพื่อแสดงประวัติการเปลี่ยนงานภายในแผนกเดียวกันของพนักงานแต่ละคน 
+พร้อมทั้งแสดงจำนวนครั้งของการเปลี่ยนงาน และเรียงลำดับตามรหัสพนักงาน ด
